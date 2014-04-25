@@ -1,0 +1,18 @@
+#!/usr/bin/env emacs --script
+
+(let ((current-directory (file-name-directory load-file-name)))
+  (setq go-projectile-test-path (expand-file-name "." current-directory))
+  (setq go-projectile-root-path (expand-file-name ".." current-directory)))
+
+(add-to-list 'load-path go-projectile-root-path)
+(add-to-list 'load-path go-projectile-test-path)
+
+(require 'go-projectile)
+
+(dolist (test-file (or argv (directory-files go-projectile-test-path t "-test.el$")))
+  (load test-file nil t))
+
+;; setup test environment
+;; and run tests
+
+(ert-run-tests-batch-and-exit t)
