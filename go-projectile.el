@@ -100,7 +100,8 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
 
 (defun go-projectile-mode ()
   "Hook for `projectile-mode-hook' to set Go related key bindings."
-  (when (funcall projectile-go-function)
+  (when (and (projectile-project-p)
+             (funcall projectile-go-function))
     (go-projectile-set-local-keys)))
 
 (defun go-projectile-switch-project ()
@@ -110,7 +111,7 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
   (when (funcall projectile-go-function)
     (unless (eq go-projectile-switch-gopath 'never)
       (if (eq go-projectile-switch-gopath 'always)
-         (setenv "GOPATH" nil))
+          (setenv "GOPATH" nil))
       (go-projectile-set-gopath))))
 
 (defun go-projectile-rewrite-pattern-args (n)
