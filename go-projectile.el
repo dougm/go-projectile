@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2014 Doug MacEachern
 
-;; Author: Doug MacEachern
-;; Created: 2014-04-24
+;; Author: Doug MacEachern <dougm@vmware.com>
+;; URL: https://github.com/dougm/go-projectile
 ;; Keywords: project, convenience
 ;; Version: 0.1.0
 ;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0"))
