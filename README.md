@@ -23,6 +23,14 @@ variable will be set appropriately, see `go-projectile-switch-gopath`.
 The `go-projectile-set-gopath` function can also be called directly, without
 using `projectile-switch-project`.
 
+### Searching
+
+Run `vc-git-grep' on `*.go` in the `$GOPATH/src/` directory of the
+current buffer using `go-projectile-git-grep` (<kbd>C-c p G</kbd>).
+
+Useful for use within multi-language projects and/or repositories that
+include vendored packages.
+
 ### Importing projects
 
 Create a new projectile project via `go-projectile-get` (<kbd>C-c p N</kbd>).

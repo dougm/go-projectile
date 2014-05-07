@@ -92,9 +92,9 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
       (message "setenv GOPATH=%s" path)
       (setenv "GOPATH" path))))
 
-(defun go-projectile-git-grep (arg)
-  "Run git "
-  (interactive "P")
+(defun go-projectile-git-grep ()
+  "Run `vc-git-grep' on *.go in the $GOPATH/src/ directory of the current buffer."
+  (interactive)
   (let ((src (concat (locate-dominating-file (or buffer-file-name default-directory) "src") "src"))
         (regexp (if (and transient-mark-mode mark-active)
                     (buffer-substring (region-beginning) (region-end))
@@ -105,7 +105,8 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
 (defun go-projectile-set-local-keys ()
   "Set local Projectile key bindings for Go projects."
   (dolist (map '(("W" go-projectile-rewrite)
-                 ("N" go-projectile-get)))
+                 ("N" go-projectile-get)
+                 ("G" go-projectile-git-grep)))
     (local-set-key (kbd (concat projectile-keymap-prefix " " (car map))) (nth 1 map))))
 
 (defun go-projectile-mode ()
