@@ -48,8 +48,8 @@ current GOPATH, or 'never to leave GOPATH untouched."
 		 (const never))
   :group 'projectile)
 
-(defvar go-project-files-ignore
-  '("third_party")
+(defvar go-projectile-files-ignore
+  '("third_party" "vendor")
   "A list of regular expressions to ignore in `go-projectile-current-project-files'.")
 
 (defun go-projectile-current-project-files ()
@@ -58,7 +58,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
              (and (string= (file-name-extension file) "go")
                   (not (-any? (lambda (pat)
                                 (string-match pat file))
-                              go-project-files-ignore))))
+                              go-projectile-files-ignore))))
            (projectile-current-project-files)))
 
 (defun go-projectile-make-gopath ()
