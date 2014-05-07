@@ -68,7 +68,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
     (when mkfile
       (let ((dir (expand-file-name (file-name-directory mkfile))))
         (with-temp-buffer
-          (when (zerop (call-process "make" nil (current-buffer) nil "-C" dir "gopath"))
+          (when (zerop (call-process "make" nil (current-buffer) nil "-s" "-C" dir "gopath"))
             (buffer-string)))))))
 
 (defun go-projectile-derive-gopath (&optional path)
@@ -91,6 +91,16 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
     (when path
       (message "setenv GOPATH=%s" path)
       (setenv "GOPATH" path))))
+
+(defun go-projectile-git-grep (arg)
+  "Run git "
+  (interactive "P")
+  (let ((src (concat (locate-dominating-file (or buffer-file-name default-directory) "src") "src"))
+        (regexp (if (and transient-mark-mode mark-active)
+                    (buffer-substring (region-beginning) (region-end))
+                  (read-string (projectile-prepend-project-name "Grep for: ")
+                               (projectile-symbol-at-point)))))
+    (vc-git-grep regexp "*.go" src)))
 
 (defun go-projectile-set-local-keys ()
   "Set local Projectile key bindings for Go projects."
