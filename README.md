@@ -23,6 +23,16 @@ variable will be set appropriately, see `go-projectile-switch-gopath`.
 The `go-projectile-set-gopath` function can also be called directly, without
 using `projectile-switch-project`.
 
+### Go tools
+
+Most of the Emacs Go packages have hard or soft dependencies on
+programs installed via `go get`, such as `gocode`, `godef`, etc.
+You can install the complete set of `go-projectile-tools` using:
+<kbd>M-x go-projectile-install-tools</kbd>
+And update the tools using: <kbd>M-x go-projectile-update-tools</kbd>
+These tools are installed within their own GOPATH, configurable via
+the `go-projectile-tools-path` variable.
+
 ### Searching
 
 Run `vc-git-grep' on `*.go` in the `$GOPATH/src/` directory of the

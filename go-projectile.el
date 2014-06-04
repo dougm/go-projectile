@@ -6,7 +6,7 @@
 ;; URL: https://github.com/dougm/go-projectile
 ;; Keywords: project, convenience
 ;; Version: 0.1.0
-;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0"))
+;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0.16"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -38,6 +38,8 @@
 
 (require 'projectile)
 (require 'go-eldoc)
+(require 'vc-git)
+(require 'autorevert)
 
 (defcustom go-projectile-switch-gopath 'always
   "Specify whether GOPATH should be updated when switching projects.
@@ -51,6 +53,52 @@ current GOPATH, or 'never to leave GOPATH untouched."
 (defvar go-projectile-files-ignore
   '("third_party" "vendor")
   "A list of regular expressions to ignore in `go-projectile-current-project-files'.")
+
+(defvar go-projectile-tools-path (concat (expand-file-name user-emacs-directory) "/gotools")
+  "GOPATH for Go tools used by Emacs.")
+
+(defvar go-projectile-tools
+  '((gocode    . "github.com/nsf/gocode")
+    (golint    . "github.com/golang/lint/golint")
+    (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
+    (goimports . "github.com/bradfitz/goimports")
+    (errcheck  . "github.com/kisielk/errcheck")
+    (oracle    . "code.google.com/p/go.tools/cmd/oracle"))
+  "Import paths for Go tools.")
+
+(defun go-projectile-tools-add-path ()
+  "Add go-projectile-tools-path to `exec-path' and friends."
+  (let ((path (concat go-projectile-tools-path "/bin")))
+    (unless (member path exec-path)
+      (add-to-list 'exec-path path)
+      (setenv "PATH" (concat (getenv "PATH") path-separator path))
+      (add-to-list 'load-path (concat go-projectile-tools-path "/src/"
+                                      (cdr (assq 'oracle go-projectile-tools)))))))
+
+(defun go-projectile-get-tools (&optional flag)
+  "Install go related tools via go get.  Optional FLAG to update."
+  (or go-projectile-tools-path (error "Error: go-projectile-tools-path not set"))
+  (go-projectile-tools-add-path)
+  (let ((env (getenv "GOPATH")))
+    (setenv "GOPATH" go-projectile-tools-path)
+    (dolist (tool go-projectile-tools)
+      (let* ((url (cdr tool))
+             (cmd (concat "go get " (if flag (concat flag " ")) url))
+             (result (shell-command-to-string cmd)))
+        (message "Go tool %s: %s" (car tool) cmd)
+        (unless (string= "" result)
+          (error result))))
+    (setenv "GOPATH" env)))
+
+(defun go-projectile-install-tools ()
+  "Install go related tools."
+  (interactive)
+  (go-projectile-get-tools))
+
+(defun go-projectile-update-tools ()
+  "Update go related tools."
+  (interactive)
+  (go-projectile-get-tools "-u"))
 
 (defun go-projectile-current-project-files ()
   "Return a list of .go files for the current project."
@@ -139,7 +187,7 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
     (if fn
         (let* ((name (plist-get fn :name))
                (signature (go-eldoc--analyze-signature (plist-get fn :signature)))
-               (args (go-eldoc--split-argument-type (plist-get signature :arg-type))))
+               (args (go-eldoc--split-types-string (plist-get signature :arg-type))))
           (format "x.%s(%s)" name (go-projectile-rewrite-pattern-args (length args))))
       (projectile-symbol-at-point))))
 

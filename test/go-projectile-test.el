@@ -43,6 +43,7 @@
       (setenv "GOPATH" env))))
 
 (ert-deftest test-go-projectile-rewrite-pattern ()
+  (go-projectile-install-tools)
   (with-current-buffer (find-file-noselect testsuite-buffer-name)
     (save-excursion
       (re-search-forward "Fo")
