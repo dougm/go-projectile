@@ -57,6 +57,9 @@ current GOPATH, or 'never to leave GOPATH untouched."
 (defvar go-projectile-tools-path (concat (expand-file-name user-emacs-directory) "/gotools")
   "GOPATH for Go tools used by Emacs.")
 
+(defvar go-projectile-url-file "go-projectile-url.eld"
+  "File containing project import URL.")
+
 (defvar go-projectile-tools
   '((gocode    . "github.com/nsf/gocode")
     (golint    . "github.com/golang/lint/golint")
@@ -227,10 +230,20 @@ DIR is the directory to use for GOPATH when running go get."
     (let ((result (shell-command-to-string (concat "go get " url))))
       (unless (string= "" result)
         (error result)))
+    (projectile-serialize url go-projectile-url-file)
     (let* ((path (concat default-directory "/src/" url))
            (project (projectile-root-bottom-up path)))
       (projectile-add-known-project project)
       (projectile-switch-project-by-name project))))
+
+(defun go-projectile-update ()
+  "Update the current project via 'go get -u'."
+  (interactive)
+  (let* ((buf (or buffer-file-name default-directory))
+         (default-directory (or (locate-dominating-file buf go-projectile-url-file)
+                                (error "Unable to find project URL")))
+         (url (projectile-unserialize go-projectile-url-file)))
+    (async-shell-command (concat "go get -u -v " url))))
 
 (add-hook 'projectile-switch-project-hook 'go-projectile-switch-project)
 (add-hook 'projectile-mode-hook 'go-projectile-mode)
