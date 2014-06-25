@@ -187,7 +187,7 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
 (defun go-projectile-rewrite-pattern ()
   "Generate default pattern for `go-projectile-rewrite'."
   (let ((fn (go-eldoc--get-funcinfo)))
-    (if fn
+    (if (and fn (> (plist-get fn :index) 0))
         (let* ((name (plist-get fn :name))
                (signature (go-eldoc--analyze-signature (plist-get fn :signature)))
                (args (go-eldoc--split-types-string (plist-get signature :arg-type))))

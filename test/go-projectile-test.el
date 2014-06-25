@@ -46,6 +46,8 @@
   (go-projectile-install-tools)
   (with-current-buffer (find-file-noselect testsuite-buffer-name)
     (save-excursion
+      (re-search-forward "ErrN")
+      (should (string= "ErrNope" (go-projectile-rewrite-pattern)))
       (re-search-forward "Fo")
       (should (string= "Foo" (go-projectile-rewrite-pattern)))
       (re-search-forward "Bar(one")

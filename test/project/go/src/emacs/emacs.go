@@ -1,5 +1,11 @@
 package emacs
 
+type CompletionCode uint8
+
+const (
+	ErrNope = CompletionCode(0xce)
+)
+
 func init() {
 
 }
