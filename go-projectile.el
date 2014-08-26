@@ -161,10 +161,8 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
     (local-set-key (kbd (concat projectile-keymap-prefix " " (car map))) (nth 1 map))))
 
 (defun go-projectile-mode ()
-  "Hook for `projectile-mode-hook' to set Go related key bindings."
-  (when (and (projectile-project-p)
-             (funcall projectile-go-function))
-    (go-projectile-set-local-keys)))
+  "Hook for `go-mode-hook' to set Go projectile related key bindings."
+  (go-projectile-set-local-keys))
 
 (defun go-projectile-switch-project ()
   "Hook for `projectile-switch-project-hook' to set GOPATH."
@@ -246,7 +244,8 @@ DIR is the directory to use for GOPATH when running go get."
     (async-shell-command (concat "go get -u -v " url))))
 
 (add-hook 'projectile-switch-project-hook 'go-projectile-switch-project)
-(add-hook 'projectile-mode-hook 'go-projectile-mode)
+(eval-after-load 'go-mode
+  '(add-hook 'go-mode-hook 'go-projectile-mode))
 
 (provide 'go-projectile)
 ;;; go-projectile.el ends here
