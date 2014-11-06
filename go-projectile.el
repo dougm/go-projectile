@@ -66,7 +66,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
     (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
     (goimports . "github.com/bradfitz/goimports")
     (errcheck  . "github.com/kisielk/errcheck")
-    (oracle    . "code.google.com/p/go.tools/cmd/oracle"))
+    (oracle    . "golang.org/x/tools/cmd/oracle"))
   "Import paths for Go tools.")
 
 (defun go-projectile-tools-add-path ()
