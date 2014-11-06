@@ -66,6 +66,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
     (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
     (goimports . "github.com/bradfitz/goimports")
     (errcheck  . "github.com/kisielk/errcheck")
+    (gorename  . "golang.org/x/tools/cmd/gorename")
     (oracle    . "golang.org/x/tools/cmd/oracle"))
   "Import paths for Go tools.")
 
@@ -77,6 +78,11 @@ current GOPATH, or 'never to leave GOPATH untouched."
       (setenv "PATH" (concat (getenv "PATH") path-separator path))
       (add-to-list 'load-path (concat go-projectile-tools-path "/src/"
                                       (cdr (assq 'oracle go-projectile-tools)))))))
+
+(defun go-projectile-tools-hook ()
+  "Tools setup go-mode-hook."
+  (load-file (concat go-projectile-tools-path
+                     "/src/golang.org/x/tools/refactor/rename/rename.el")))
 
 (defun go-projectile-get-tools (&optional flag)
   "Install go related tools via go get.  Optional FLAG to update."
@@ -96,7 +102,8 @@ current GOPATH, or 'never to leave GOPATH untouched."
 (defun go-projectile-install-tools ()
   "Install go related tools."
   (interactive)
-  (go-projectile-get-tools))
+  (go-projectile-get-tools)
+  (add-hook 'go-mode-hook 'go-projectile-tools-hook))
 
 (defun go-projectile-update-tools ()
   "Update go related tools."
