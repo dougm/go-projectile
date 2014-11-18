@@ -48,7 +48,7 @@ This function will 'go get' an existing repo and switch to the new project.
 
 ### Refactoring
 
-Renaming of Go identifiers is available via <kbd>M-x go-rename</kbd>.
+Renaming of Go identifiers is available via `go-rename` (<kbd>C-c p w</kbd>).
 
 Very basic refactoring is made available via `go-projectile-rewrite` (<kbd>C-c p W</kbd>).
 It is just a wrapper around `gofmt -r`, where go-projectile tries to help
