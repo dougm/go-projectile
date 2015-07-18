@@ -64,9 +64,10 @@ current GOPATH, or 'never to leave GOPATH untouched."
   '((gocode    . "github.com/nsf/gocode")
     (golint    . "github.com/golang/lint/golint")
     (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
-    (goimports . "github.com/bradfitz/goimports")
     (errcheck  . "github.com/kisielk/errcheck")
+    (goimports . "golang.org/x/tools/cmd/goimports")
     (gorename  . "golang.org/x/tools/cmd/gorename")
+    (gomvpkg   . "golang.org/x/tools/cmd/gomvpkg")
     (oracle    . "golang.org/x/tools/cmd/oracle"))
   "Import paths for Go tools.")
 
