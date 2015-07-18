@@ -35,7 +35,7 @@ the `go-projectile-tools-path` variable.
 
 ### Searching
 
-Run `vc-git-grep' on `*.go` in the `$GOPATH/src/` directory of the
+Run `vc-git-grep` on `*.go` in the `$GOPATH/src/` directory of the
 current buffer using `go-projectile-git-grep` (<kbd>C-c p G</kbd>).
 
 Useful for use within multi-language projects and/or repositories that
