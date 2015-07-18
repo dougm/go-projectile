@@ -70,17 +70,20 @@ current GOPATH, or 'never to leave GOPATH untouched."
     (oracle    . "golang.org/x/tools/cmd/oracle"))
   "Import paths for Go tools.")
 
+(defun go-projectile-tools-load-oracle ()
+  "Load go-oracle."
+  (require 'go-oracle (concat go-projectile-tools-path "/src/"
+                              (cdr (assq 'oracle go-projectile-tools))
+                              "/oracle.el")) t)
+
 (defun go-projectile-tools-add-path ()
   "Add go-projectile-tools-path to `exec-path' and friends."
   (let ((path (concat go-projectile-tools-path "/bin")))
     (unless (member path exec-path)
       (add-to-list 'exec-path path)
       (setenv "PATH" (concat (getenv "PATH") path-separator path))
-      (add-to-list 'load-path (concat go-projectile-tools-path "/src/"
-                                      (cdr (assq 'oracle go-projectile-tools))))
       (setq go-oracle-command (concat path "/oracle"))
-      (autoload 'go-oracle-mode "oracle")
-      (add-hook 'go-mode-hook 'go-oracle-mode)
+      (add-hook 'go-mode-hook 'go-projectile-tools-load-oracle)
       (add-to-list 'load-path (concat go-projectile-tools-path "/src/"
                                       "golang.org/x/tools/refactor/rename"))
       (autoload 'go-rename "rename" nil t)
