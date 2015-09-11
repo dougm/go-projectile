@@ -63,7 +63,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
 (defvar go-projectile-tools
   '((gocode    . "github.com/nsf/gocode")
     (golint    . "github.com/golang/lint/golint")
-    (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
+    (godef     . "github.com/rogpeppe/godef")
     (errcheck  . "github.com/kisielk/errcheck")
     (goimports . "golang.org/x/tools/cmd/goimports")
     (gorename  . "golang.org/x/tools/cmd/gorename")
