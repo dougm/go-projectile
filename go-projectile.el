@@ -178,7 +178,7 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
   (go-projectile-set-local-keys))
 
 (defun go-projectile-switch-project ()
-  "Hook for `projectile-switch-project-hook' to set GOPATH."
+  "Hook for `projectile-after-switch-project-hook' to set GOPATH."
   ;; projectile-project-type could be 'go or 'make
   ;; we just check if there are any *.go files in the project.
   (when (funcall projectile-go-function)
@@ -256,7 +256,7 @@ DIR is the directory to use for GOPATH when running go get."
          (url (projectile-unserialize go-projectile-url-file)))
     (async-shell-command (concat "go get -u -v " url))))
 
-(add-hook 'projectile-switch-project-hook 'go-projectile-switch-project)
+(add-hook 'projectile-after-switch-project-hook 'go-projectile-switch-project)
 (eval-after-load 'go-mode
   '(add-hook 'go-mode-hook 'go-projectile-mode))
 
