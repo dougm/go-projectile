@@ -18,7 +18,7 @@ After running `projectile-switch-project` (<kbd>C-c p s</kbd>) the features of
 
 Rather than have a global GOPATH set in your .bashrc or similar, go-projectile
 makes it easier for each project to have their own GOPATH automatically
-configured.  Upon switching to a projectile project, the GOPATH enviroment
+configured.  Upon switching to a projectile project, the GOPATH environment
 variable will be set appropriately, see `go-projectile-switch-gopath`.
 The `go-projectile-set-gopath` function can also be called directly, without
 using `projectile-switch-project`.
