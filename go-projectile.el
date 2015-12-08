@@ -130,7 +130,9 @@ current GOPATH, or 'never to leave GOPATH untouched."
       (let ((dir (expand-file-name (file-name-directory mkfile))))
         (with-temp-buffer
           (when (zerop (call-process "make" nil (current-buffer) nil "-s" "-C" dir "gopath"))
-            (buffer-string)))))))
+            (let ((path (buffer-string)))
+              (unless (string-empty-p path)
+                path))))))))
 
 (defun go-projectile-derive-gopath (&optional path)
   "Attempt to derive GOPATH for the current buffer.
