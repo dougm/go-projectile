@@ -76,7 +76,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
   "Load go-oracle."
   (require 'go-oracle (concat go-projectile-tools-path "/src/"
                               (cdr (assq 'oracle go-projectile-tools))
-                              "/oracle.el")) t)
+                              "/oracle.el") t))
 
 (defun go-projectile-tools-add-path ()
   "Add go-projectile-tools-path to `exec-path' and friends."
