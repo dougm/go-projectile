@@ -131,7 +131,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
         (with-temp-buffer
           (when (zerop (call-process "make" nil (current-buffer) nil "-s" "-C" dir "gopath"))
             (let ((path (buffer-string)))
-              (unless (string-empty-p path)
+              (unless (string= path "")
                 path))))))))
 
 (defun go-projectile-derive-gopath (&optional path)
