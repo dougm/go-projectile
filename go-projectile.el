@@ -146,13 +146,17 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
                  (string-prefix-p p default-directory))
                (split-string (or (getenv "GOPATH") "") path-separator t))))
 
+(defvar-local go-projectile-project-gopath nil)
+
 (defun go-projectile-set-gopath ()
   "Attempt to setenv GOPATH for the current project."
   (interactive)
-  (let ((path (or (go-projectile-make-gopath)
+  (let ((path (or go-projectile-project-gopath
+                  (go-projectile-make-gopath)
                   (go-projectile-derive-gopath))))
     (when path
       (message "setenv GOPATH=%s" path)
+      (setq go-projectile-project-gopath path)
       (setenv "GOPATH" path))))
 
 (defun go-projectile-git-grep ()
