@@ -180,9 +180,10 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
 
 (defun go-projectile-switch-project ()
   "Hook for `projectile-after-switch-project-hook' to set GOPATH."
-  ;; projectile-project-type could be 'go or 'make
-  ;; we just check if there are any *.go files in the project.
-  (when (funcall projectile-go-function)
+  ;; (projectile-project-type) could be 'go or 'make
+  ;; we just check if there are any *.go files in the project, unless the `projectile-project-type' local is set.
+  (when (or (eq projectile-project-type 'go)
+            (funcall projectile-go-function))
     (unless (eq go-projectile-switch-gopath 'never)
       (if (eq go-projectile-switch-gopath 'always)
           (setenv "GOPATH" nil))
