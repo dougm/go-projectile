@@ -1,6 +1,7 @@
-EMACS ?= emacs
-EMACSFLAGS =
 CASK = cask
+EMACS_BIN ?= emacs
+EMACS_FLAGS =
+EMACS_EXEC = $(CASK) exec $(EMACS_BIN) --no-site-file --no-site-lisp --batch $(EMACS_FLAGS)
 
 OBJECTS = go-projectile.elc
 
@@ -9,23 +10,16 @@ elpa:
 	$(CASK) update
 	touch $@
 
-.PHONY: build
-build : elpa $(OBJECTS)
+.PHONY: build test docs clean
 
-.PHONY: test
-test : build
-	PATH=$(PATH):$(HOME)/.emacs.d/el-get/go-autocomplete/bin \
-	$(CASK) exec $(EMACS) --no-site-file --no-site-lisp --batch \
-		$(EMACSFLAGS) \
-		-l test/run-tests
+build: elpa $(OBJECTS)
 
-.PHONY: clean
-clean :
-	rm -f $(OBJECTS)
-	rm -f elpa
-	rm -rf .cask # Clean packages installed for development
+test: build
+	$(EMACS_EXEC) -l test/run-tests
 
-%.elc : %.el
-	$(CASK) exec $(EMACS) --no-site-file --no-site-lisp --batch \
-		$(EMACSFLAGS) \
-		-f batch-byte-compile $<
+clean:
+	rm -f $(OBJECTS) elpa
+	rm -rf .cask
+
+%.elc: %.el
+	$(EMACS_EXEC) -f batch-byte-compile $<

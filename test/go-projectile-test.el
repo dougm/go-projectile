@@ -63,3 +63,12 @@
   (let ((path "github.com/dougm/go-projectile"))
     (should (string= path (go-projectile-import-url path)))
     (should (string= path (go-projectile-import-url (concat "https://" path))))))
+
+(ert-deftest test-go-projectile-directory-gopath-p ()
+  (with-current-buffer (find-file-noselect testsuite-buffer-name)
+    (let ((env (getenv "GOPATH")))
+      (setenv "GOPATH" nil)
+      (should (not (go-projectile-directory-gopath-p)))
+      (go-projectile-set-gopath)
+      (should (go-projectile-directory-gopath-p))
+      (setenv "GOPATH" env))))

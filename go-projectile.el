@@ -5,7 +5,7 @@
 ;; Author: Doug MacEachern <dougm@vmware.com>
 ;; URL: https://github.com/dougm/go-projectile
 ;; Keywords: project, convenience
-;; Version: 0.1.1
+;; Version: 0.2.1
 ;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0.16") (go-rename "0") (go-guru "0"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -38,6 +38,7 @@
 
 (require 'projectile)
 (require 'go-eldoc)
+(require 'go-guru)
 (require 'go-rename)
 (require 'vc-git)
 (require 'autorevert)
@@ -139,6 +140,12 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
               path
             (directory-file-name (expand-file-name dir)))))))
 
+(defun go-projectile-directory-gopath-p ()
+  "Check if `default-directory' is under the current GOPATH."
+  (car (mapcar (lambda (p)
+                 (string-prefix-p p default-directory))
+               (split-string (or (getenv "GOPATH") "") path-separator t))))
+
 (defun go-projectile-set-gopath ()
   "Attempt to setenv GOPATH for the current project."
   (interactive)
@@ -180,6 +187,16 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
       (if (eq go-projectile-switch-gopath 'always)
           (setenv "GOPATH" nil))
       (go-projectile-set-gopath))))
+
+(defun go-projectile-switch-project-window ()
+  "Hook for `buffer-list-update-hook' to set GOPATH.
+When `projectile-project-type' set to `go', GOPATH is checked, calling `go-projectile-switch-project' if needed."
+  (if (and (eq projectile-project-type 'go)
+           (null (active-minibuffer-window)))
+      (let ((caller (second (backtrace-frame 6))))
+        (if (and (eq caller 'select-window)
+                 (not (go-projectile-directory-gopath-p)))
+            (go-projectile-switch-project)))))
 
 (defun go-projectile-rewrite-pattern-args (n)
   "Generate function call pattern with N arguments for `go-projectile-rewrite-pattern'."
