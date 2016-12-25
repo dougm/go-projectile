@@ -56,7 +56,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
   '("third_party" "vendor")
   "A list of regular expressions to ignore in `go-projectile-current-project-files'.")
 
-(defvar go-projectile-tools-path (concat (expand-file-name user-emacs-directory) "/gotools")
+(defvar go-projectile-tools-path (expand-file-name (concat user-emacs-directory "/gotools"))
   "GOPATH for Go tools used by Emacs.")
 
 (defvar go-projectile-url-file "go-projectile-url.eld"
