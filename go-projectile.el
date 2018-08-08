@@ -177,11 +177,10 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
 
 (defun go-projectile-set-local-keys ()
   "Set local Projectile key bindings for Go projects."
-  (dolist (map '(("W" go-projectile-rewrite)
-                 ("w" go-rename)
-                 ("N" go-projectile-get)
-                 ("G" go-projectile-git-grep)))
-    (local-set-key (kbd (concat projectile-keymap-prefix " " (car map))) (nth 1 map))))
+  (define-key projectile-command-map (kbd "W") 'go-projectile-rewrite)
+  (define-key projectile-command-map (kbd "w") 'go-rename)
+  (define-key projectile-command-map (kbd "N") 'go-projectile-get)
+  (define-key projectile-command-map (kbd "G") 'go-projectile-git-grep))
 
 (defun go-projectile-mode ()
   "Hook for `go-mode-hook' to set Go projectile related key bindings."
