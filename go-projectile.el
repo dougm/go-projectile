@@ -63,7 +63,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
   "File containing project import URL.")
 
 (defvar go-projectile-tools
-  '((gocode    . "github.com/nsf/gocode")
+  '((gocode    . "github.com/mdempsky/gocode")
     (golint    . "github.com/golang/lint/golint")
     (godef     . "github.com/rogpeppe/godef")
     (errcheck  . "github.com/kisielk/errcheck")
