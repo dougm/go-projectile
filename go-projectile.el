@@ -6,7 +6,7 @@
 ;; URL: https://github.com/dougm/go-projectile
 ;; Keywords: project, convenience
 ;; Version: 0.2.1
-;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0.16") (go-rename "0") (go-guru "0"))
+;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0.16") (go-rename "0") (go-guru "0") (dash "2.17.0"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -42,6 +42,7 @@
 (require 'go-rename)
 (require 'vc-git)
 (require 'autorevert)
+(require 'dash)
 
 (defcustom go-projectile-switch-gopath 'always
   "Specify whether GOPATH should be updated when switching projects.
@@ -192,7 +193,7 @@ PATH defaults to GOPATH via getenv, used to determine if buffer is in current GO
   ;; (projectile-project-type) could be 'go or 'make
   ;; we just check if there are any *.go files in the project, unless the `projectile-project-type' local is set.
   (when (or (eq projectile-project-type 'go)
-            (funcall projectile-go-function))
+            (funcall projectile-go-project-test-function))
     (unless (eq go-projectile-switch-gopath 'never)
       (if (eq go-projectile-switch-gopath 'always)
           (setenv "GOPATH" nil))
