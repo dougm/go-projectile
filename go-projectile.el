@@ -6,7 +6,7 @@
 ;; URL: https://github.com/dougm/go-projectile
 ;; Keywords: project, convenience
 ;; Version: 0.2.1
-;; Package-Requires: ((projectile "0.10.0") (go-mode "0") (go-eldoc "0.16") (go-rename "0") (go-guru "0") (dash "2.17.0"))
+;; Package-Requires: ((cl-lib "0.5") (projectile "0.10.0") (go-mode "0") (go-eldoc "0.16") (go-rename "0") (go-guru "0") (dash "2.17.0"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -36,6 +36,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'projectile)
 (require 'go-eldoc)
 (require 'go-guru)
@@ -208,9 +209,9 @@ When `projectile-project-type' set to `go', GOPATH is checked, calling `go-proje
              (frame (backtrace-frame index))
              (found 0))
         (while (not (equal found 2))
-          (setq frame (backtrace-frame (incf index)))
+          (setq frame (backtrace-frame (cl-incf index)))
           (when (equal t (first frame))
-            (incf found)))
+            (cl-incf found)))
         (let ((caller (second frame)))
           (if (and (eq caller 'select-window)
                    (not (go-projectile-directory-gopath-p)))
