@@ -97,7 +97,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
     (setenv "GOPATH" go-projectile-tools-path)
     (dolist (tool go-projectile-tools)
       (let* ((url (cdr tool))
-             (cmd (concat "go get " (if flag (concat flag " ")) url))
+             (cmd (concat "go install " (if flag (concat flag " ")) url "@latest"))
              (result (shell-command-to-string cmd)))
         (message "Go tool %s: %s" (car tool) cmd)
         (unless (string= "" result)
@@ -112,7 +112,7 @@ current GOPATH, or 'never to leave GOPATH untouched."
 (defun go-projectile-update-tools ()
   "Update go related tools."
   (interactive)
-  (go-projectile-get-tools "-u"))
+  (go-projectile-get-tools))
 
 (defun go-projectile-current-project-files ()
   "Return a list of .go files for the current project."
